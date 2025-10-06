@@ -114,7 +114,7 @@ for test_filename in test_dir.iterdir():
         set_color(COLOR_GREEN if result else COLOR_RED)
         result_str = "PASS" if result else "FAIL"
 
-        print(f"{board} {player} {result_str}")
+        print(f"{board} {player} {result_str} (expected {expected}) ")
         set_color(COLOR_RESET)
     infile.close()
 

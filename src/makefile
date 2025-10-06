@@ -7,7 +7,7 @@ FLAGS = -Wall --std=c++17 -O3 -g
 #FLAGS = -Wall --std=c++17 -O3 -g -fno-omit-frame-pointer -fsanitize=address -D_GLIBCXX_DEBUG
 
 .DEFAULT_GOAL := segclobber
-.PHONY: clean rmdb ftest test db
+.PHONY: clean ftest test db
 
 COMMON_OBJS := database3.o utils.o state.o solver.o bound.o zobrist.o miscTypes.o
 
@@ -30,8 +30,8 @@ DBManage4: dbmanage4.o $(COMMON_OBJS)
 clean:
 	-rm *.o segclobber DBManage4
 
-rmdb:
-	-rm database3.bin database3_alt.bin
+#rmdb:
+#	-rm database3.bin database3_alt.bin
 
 test: segclobber
 	time python3 runtests.py
@@ -39,7 +39,8 @@ test: segclobber
 ftest: segclobber
 	time python3 runtests.py --persist
 
-db: rmdb DBManage4
+db: DBManage4
+	-rm database3.bin database3_alt.bin
 	touch database3.bin database3_alt.bin
 	-time ./DBManage4
 
