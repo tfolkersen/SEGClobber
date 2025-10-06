@@ -49,6 +49,8 @@ will print the size of the transposition table (in MB) and then quit, right
 before when it would normally use `calloc` to allocate memory for it. With the
 default 26 bits, the size should be around 5.6 GB.
 
+To test correctness, run `make test` (this will take a few minutes to complete). Also consider rebuilding the database first (`make db`).
+
 ## SEGClobber CLI Options
 `[options]` is 0 or more of the following:
 - `--persist` Read input from stdin (until EOF), instead of the command line.
