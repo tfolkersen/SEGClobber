@@ -7,9 +7,16 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
+#include <vector>
 #include <limits>
 #include <memory>
+#include <cstdint>
+#include <cassert>
+#include <utility>
+#include <optional>
+#include <cstdlib>
 #include <unordered_set>
+#include <random>
 #include <set>
 
 

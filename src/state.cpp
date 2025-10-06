@@ -4,6 +4,8 @@
 #include "zobrist.h"
 #include <iostream>
 #include <cstring>
+#include <cstdint>
+#include <cassert>
 #include <algorithm>
 
 

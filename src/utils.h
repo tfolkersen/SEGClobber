@@ -7,6 +7,8 @@
 #include <vector>
 #include <cassert>
 #include <cstdint>
+#include <cstddef>
+#include <utility>
 #include <chrono>
 
 #define EMPTY 0

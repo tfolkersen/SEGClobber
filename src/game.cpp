@@ -2,6 +2,12 @@
 
 #include <iostream>
 #include <cstring>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <utility>
+#include <algorithm>
+#include <cstdint>
 #include "utils.h"
 
 using namespace std;

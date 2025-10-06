@@ -1,8 +1,10 @@
 #pragma once
 
-#include <cstdlib>
 #include <string>
 #include <vector>
+#include <utility>
+#include <cstdint>
+#include <iostream>
 
 
 struct __GameCharView;

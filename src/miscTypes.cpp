@@ -1,5 +1,10 @@
 #include <algorithm>
 #include <cstring>
+#include <vector>
+#include <cstdint>
+#include <cassert>
+#include <utility>
+#include <optional>
 
 #include "miscTypes.h"
 #include "state.h"

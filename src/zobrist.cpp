@@ -2,6 +2,8 @@
 #include <ctime>
 #include <vector>
 #include <cassert>
+#include <cstdint>
+#include <limits>
 #include <random>
 
 namespace {

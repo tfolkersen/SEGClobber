@@ -3,8 +3,13 @@
 //#include "state.h"
 #include "solver.h"
 #include "options.h"
+#include "database3.h"
 #include <cstring>
+#include <string>
+#include <cstdlib>
+#include <cstdint>
 #include <chrono>
+#include <cassert>
 
 //#include "game.h"
 

@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <stdint.h>
 #include <vector>
+#include <cassert>
 
 #define OC_UNKNOWN 0
 #define OC_B 1

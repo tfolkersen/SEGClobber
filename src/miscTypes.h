@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <vector>
 #include <iostream>
+#include <cassert>
 
 #include "utils.h"
 

@@ -6,8 +6,13 @@
 #include <limits>
 #include <random>
 #include <optional>
+#include <utility>
+#include <iostream>
+#include <vector>
+#include <cassert>
 
 #include "options.h"
+#include "miscTypes.h"
 #include "database3.h"
 
 typedef std::pair<int, bool> SolveResult;

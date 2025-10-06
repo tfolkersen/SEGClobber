@@ -18,6 +18,10 @@ TODO:
 #include <cstring>
 #include <unordered_set>
 #include <unordered_map>
+#include <cstdint>
+#include <cstdlib>
+#include <cassert>
+#include <optional>
 
 #include "options.h"
 #include "solver.h"

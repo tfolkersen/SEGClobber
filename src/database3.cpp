@@ -1,10 +1,15 @@
 #include "database3.h"
 #include "miscTypes.h"
+#include "options.h"
 #include <iostream>
 #include <vector>
+#include <cstddef>
 #include <algorithm>
+#include <cstdint>
 #include <tuple>
 #include <cassert>
+#include <cstdlib>
+#include <cstdio>
 
 using namespace std;
 

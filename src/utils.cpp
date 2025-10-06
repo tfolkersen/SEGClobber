@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <cassert>
+#include <cstdint>
 #include "database3.h"
 
 using namespace std;
