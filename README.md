@@ -80,7 +80,7 @@ default 26 bits, the size should be around 5.6 GB.
 - `ftest` Like the `test` target, but uses `segclobber --persist` to greatly
   speed up run time.
 
-## Other Scripta
+## Other Scripts
 - `pattern.py` (See output of `python3 -h pattern.py`) Used to run `segclobber`
   for various purposes:
     - `BW` and `BBW` conjectures
