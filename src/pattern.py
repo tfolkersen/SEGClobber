@@ -3,6 +3,7 @@ import time
 import random
 import select
 import sys
+from collections import Counter
 
 proc = None
 args = sys.argv
@@ -473,7 +474,8 @@ def handle_rand_exp():
     random.seed(seed)
 
     seen_tests = set()
-    n_timeouts = 0
+    #n_timeouts = 0
+    timeout_counter = Counter()
 
     open_csv(out_filename)
 
@@ -507,7 +509,8 @@ def handle_rand_exp():
 
             if result is None:
                 print("TIMEOUT")
-                n_timeouts += 1
+                #n_timeouts += 1
+                timeout_counter[level] += 1
                 results.clear()
                 i -= 1
                 break
@@ -532,11 +535,13 @@ def handle_rand_exp():
             write_csv(result)
 
     log = open(out_filename + ".log", "w")
-    log.write(f"Timeouts: {n_timeouts}\n")
+    #log.write(f"Timeouts: {n_timeouts}\n")
+    log.write("Timeouts:\n")
+    log.write(str(timeout_counter) + "\n")
     log.write(f"Seed: {seed}\n")
     log.close()
 
-    print(f"Completed with {n_timeouts} timeout(s)")
+    #print(f"Completed with {n_timeouts} timeout(s)")
 
 
 def handle_mcgs_gen():
