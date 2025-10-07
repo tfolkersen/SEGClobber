@@ -10,19 +10,19 @@ DATA_DIR=experiment_data
 DIAGRAM_DIR=diagrams
 
 # CS3
-python3 pattern.py rand_exp 58,64 100 0 0,1 "$DATA_DIR/0-1.csv" 90
+python3 pattern.py rand_exp 58,64 100 1567 0,1 "$DATA_DIR/0-1.csv" 110
 
 # No ID
-python3 pattern.py rand_exp 58,64 100 0 0,2 "$DATA_DIR/0-2.csv" 90
+python3 pattern.py rand_exp 58,64 100 1568 0,2 "$DATA_DIR/0-2.csv" 110
 
 # No subgame delete
-python3 pattern.py rand_exp 58,64 100 0 0,3 "$DATA_DIR/0-3.csv" 90
+python3 pattern.py rand_exp 58,64 100 1569 0,3 "$DATA_DIR/0-3.csv" 110
 
 # No prune dominated
-python3 pattern.py rand_exp 58,64 100 0 0,4 "$DATA_DIR/0-4.csv" 90
+python3 pattern.py rand_exp 58,64 100 1570 0,4 "$DATA_DIR/0-4.csv" 110
 
 # No substitute
-python3 pattern.py rand_exp 58,58 100 0 0,5 "$DATA_DIR/0-5.csv" 90
+python3 pattern.py rand_exp 58,58 100 1571 0,5 "$DATA_DIR/0-5.csv" 110
 
 ## No misc
 #python3 pattern.py rand_exp 60,60 10 0 0,6 "$DATA_DIR/0-6.csv" 60
