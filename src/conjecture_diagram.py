@@ -38,7 +38,8 @@ def get_xo_data():
             continue
 
     infile.close()
-    return data
+    filtered = [d for d in data if d[0] != 3]
+    return filtered
 
 
 def get_xxo_data():
