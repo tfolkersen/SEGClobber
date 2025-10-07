@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 pal = sns.color_palette("colorblind")
+plt.rcParams.update({"font.size": 14})
+
 
 ################################################## Global variables
 assert len(sys.argv) == 3
@@ -119,7 +121,7 @@ def make_diagram_abs_delta(info):
         bottom = 0.11,
         top = 0.92,
 
-        left = 0.09,
+        left = 0.13,
         right = 0.97,
     )
     #fig.set_size_inches(10, 5)
