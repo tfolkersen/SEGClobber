@@ -2,8 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+xo_filename = "xo-output.txt"
+xxo_filename = "xxo-output.txt"
+
+
 def get_xo_data():
-    infile = open("xo-output.txt")
+    infile = open(xo_filename)
 
     n = -1
     data = []
@@ -38,7 +42,7 @@ def get_xo_data():
 
 
 def get_xxo_data():
-    infile = open("xxo-output.txt")
+    infile = open(xxo_filename)
 
     n = -1
     data = []
@@ -92,7 +96,7 @@ def make_plot(filename, data, opts):
     plt.title(opts["title"])
     plt.xlabel(opts["x_name"])
     plt.ylabel(opts["y_name"])
-    plt.scatter(x_data, y_data, color="blue")
+    plt.scatter(x_data, y_data, color="#015887")
     plt.savefig(filename)
 
 
@@ -110,7 +114,7 @@ for d in data1:
 
 make_plot("xo_plot.png", data1, {
     "x_name": "# pairs",
-    "y_name": "Log time (ms)",
+    "y_name": "Log time (seconds)",
     "title": "XO solve time vs pair count"
 })
 
@@ -122,8 +126,9 @@ data2 = [[d[0], math.log(d[1] + d[2], 10)] for d in data2]
 
 make_plot("xxo_plot.png", data2, {
     "x_name": "# groups",
-    "y_name": "Log time (ms)",
+    "y_name": "Log time (seconds)",
     "title": "XXO solve time vs XXO group count"
 })
 
 get_fit(data2)
+

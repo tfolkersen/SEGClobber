@@ -6,6 +6,8 @@ import pathlib
 import shutil
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+pal = sns.color_palette("colorblind")
 
 ################################################## Global variables
 assert len(sys.argv) == 3
@@ -56,7 +58,7 @@ def assert_opt_labels_format(opt_labels):
         for i in range(len(ol)):
             if i in skip:
                 continue
-            assert type(ol[i]) is str
+            assert type(ol[i]) is str or type(ol[i]) is tuple
 
 
 
@@ -252,14 +254,14 @@ diagram_info_list = [
 
         "opt_labels": [
 
-            [0, "Default", "green", "1"],
+            [0, "Default", "#015887", "1"],
 
-            [1, "Complexity Score 3", "blue", "2"],
-            [2, "No ID", "blue", "2"],
-            [3, "No Subgame Delete", "blue", "2"],
-            [4, "No Prune Dominated", "blue", "2"],
-            [5, "No Substitute", "blue", "2"],
-            [6, "No Misc", "blue", "2"],
+            [1, "Complexity Score 3", pal[3], "2"],
+            [2, "No ID", pal[3], "2"],
+            [3, "No Speculative Removal", pal[3], "2"],
+            [4, "No Prune Dominated", pal[3], "2"],
+            [5, "No Substitute", pal[3], "2"],
+            [6, "No Misc", pal[3], "2"],
         ],
     },
 ]
