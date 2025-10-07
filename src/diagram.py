@@ -114,6 +114,20 @@ def make_diagram_abs_delta(info):
     assert_diagram_info_format(info)
     plt.close()
 
+    fig = plt.gcf()
+    fig.subplots_adjust(
+        bottom = 0.11,
+        top = 0.92,
+
+        left = 0.09,
+        right = 0.97,
+    )
+    #fig.set_size_inches(10, 5)
+
+    ax = plt.gca()
+    ax.margins(x = 0.03)
+
+
     # Info fields
     opt_labels = info["opt_labels"]
     opt_ids = [ol[0] for ol in opt_labels]
@@ -172,7 +186,7 @@ def make_diagram_abs_delta(info):
             continue
 
         plt.scatter(x_data, y_data, label=ol_name, color=ol_color,
-                    marker=ol_marker)
+                    marker=ol_marker, s=60)
 
     plt.legend()
     plt.title(title)
