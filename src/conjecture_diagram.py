@@ -5,6 +5,7 @@ import math
 xo_filename = "xo-output.txt"
 xxo_filename = "xxo-output.txt"
 
+plt.rcParams.update({"font.size": 14})
 
 def get_xo_data():
     infile = open(xo_filename)
@@ -94,6 +95,19 @@ def make_plot(filename, data, opts):
     y_data = [d[1] for d in data]
 
     plt.close()
+    fig = plt.gcf()
+    fig.subplots_adjust(
+        bottom = 0.11,
+        top = 0.92,
+
+        left = 0.12,
+        right = 0.97,
+    )
+    #fig.set_size_inches(10, 5)
+
+    ax = plt.gca()
+    ax.margins(x = 0.04)
+
     plt.title(opts["title"])
     plt.xlabel(opts["x_name"])
     plt.ylabel(opts["y_name"])
@@ -108,7 +122,7 @@ def get_fit(data):
     print(f"Slope: {slope}, Intercept: {intercept}")
 
 data1 = get_xo_data()
-data1 = data1[23 : 44]
+#data1 = data1[23 : 44]
 
 for d in data1:
     d[1] = math.log(d[1], 10)
@@ -122,7 +136,7 @@ make_plot("xo_plot.png", data1, {
 get_fit(data1)
 
 data2 = get_xxo_data()
-data2 = data2[7 : 24]
+#data2 = data2[7 : 24]
 data2 = [[d[0], math.log(d[1] + d[2], 10)] for d in data2]
 
 make_plot("xxo_plot.png", data2, {
