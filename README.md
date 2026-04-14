@@ -103,7 +103,7 @@ executable. If you move the project's location, you will need to rebuild.
   `exploreExample.txt`) Uses `segclobber --persist` to interactively find
   winning moves of given positions. Input is not processed from stdin, but
   rather from a named pipe `inpipe`. Output is colorized.
-- `runtests.py` Runs game tests from `src/tests` directory. A test is a single
+- `_runtests.py` Runs game tests from `src/tests` directory. A test is a single
   line in the format `<board> <first player> <expected winning player>`.
 - `diagram.py` and `conjecture_diagram.py` Diagram image generators (using
   matplotlib) for our ACG 2025 paper.
