@@ -1,8 +1,9 @@
-#include "database3.h"
+#include "database.h"
 #include "miscTypes.h"
 #include "options.h"
 #include <iostream>
 #include <vector>
+#include <string>
 #include <cstddef>
 #include <algorithm>
 #include <cstdint>
@@ -10,8 +11,22 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstdio>
+#include <filesystem>
 
 using namespace std;
+
+namespace {
+#ifndef SEGCLOBBER_DATA_DIR
+#error Data directory not defined!
+#endif
+
+std::string resolve_path_relative_to_data_dir(const std::string& relative_path)
+{
+    std::filesystem::path p(SEGCLOBBER_DATA_DIR);
+    p /= relative_path;
+    return std::filesystem::absolute(p).string();
+}
+} // namespace
 
 uint8_t *db_get_outcome(const uint8_t *entry) {
     if (entry == 0) {
@@ -274,7 +289,11 @@ Database::~Database() {
 //NOTE: doesn't update header
 void Database::save(const char *fileName) {
     cout << "DB SAVE" << endl;
-    file = fopen(fileName, "r+");
+
+    const std::string resolved = resolve_path_relative_to_data_dir(fileName);
+    //cout << "FILE IS \"" << resolved << "\"" << endl;
+    file = fopen(resolved.c_str(), "r+");
+
     fwrite(data, 1, size, file);
     fclose(file);
 }
@@ -304,7 +323,9 @@ void Database::load() {
 void Database::loadFrom(const char *fileName) {
     //cout << "DB LOAD" << endl;
 
-    file = fopen(fileName, "r+");
+    const std::string resolved = resolve_path_relative_to_data_dir(fileName);
+    //cout << "FILE IS \"" << resolved << "\"" << endl;
+    file = fopen(resolved.c_str(), "r+");
 
     fseek(file, 0L, SEEK_END);
     size = ftell(file);

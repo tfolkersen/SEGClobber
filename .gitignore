@@ -5,3 +5,5 @@ src/dbtest
 **/clobber
 src/compile_commands.json
 src/.cache
+__pycache__
+build

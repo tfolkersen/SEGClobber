@@ -9,7 +9,7 @@
 #include "miscTypes.h"
 #include "state.h"
 #include "utils.h"
-#include "database3.h"
+#include "database.h"
 #include "zobrist.h"
 
 using namespace std;

@@ -1,11 +1,24 @@
+"""
+NOTE: Run from CMake build directory i.e:
+    cd build
+    cmake --build . --target test
+Or:
+    cd build
+    cmake --build . --target ftest
+
+python3 _runtests.py <segclobber path> <data dir path> [--persist]
+"""
 import subprocess
 import sys
 import os
-import pathlib
+from pathlib import Path
+
+assert 3 <= len(sys.argv) and len(sys.argv) <= 4
+
+SEGCLOBBER_PATH = str(Path(sys.argv[1]))
+TEST_DIR = str(Path(sys.argv[2]) / "tests")
 
 ############################################################ Constants/variables
-TEST_DIR = "tests"
-
 COLOR_RED = 31
 COLOR_GREEN = 32
 COLOR_RESET = 0
@@ -37,7 +50,7 @@ def run_test_reset_proc(board, player, expected):
         assert is_valid_format(field)
     assert len(player) == 1 and len(expected) == 1
 
-    command = f"./segclobber {board} {player}"
+    command = f"{SEGCLOBBER_PATH} {board} {player}"
 
     proc = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
     result = proc.stdout.readline().decode("UTF-8")
@@ -56,7 +69,7 @@ def run_test_persist_proc(board, player, expected):
     global proc
 
     if proc is None:
-        command = "./segclobber --persist"
+        command = f"{SEGCLOBBER_PATH} --persist"
         proc = subprocess.Popen(
             command.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
@@ -79,11 +92,10 @@ def set_color(color):
 ############################################################ Main logic
 run_test_fn = run_test_reset_proc
 
-assert len(sys.argv) in [1, 2]
 if "--persist" in sys.argv:
     run_test_fn = run_test_persist_proc
 
-test_dir = pathlib.Path(TEST_DIR)
+test_dir = Path(TEST_DIR)
 
 tests_passed = 0
 tests_failed = 0

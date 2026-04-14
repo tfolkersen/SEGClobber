@@ -3,6 +3,10 @@ import os
 import atexit
 import select
 import sys
+from segclobber_path import get_segclobber_path
+
+SEGCLOBBER_PATH = get_segclobber_path("build")
+
 
 printOnlyWinning = False
 showProgress = False
@@ -162,7 +166,7 @@ clearScreen()
 cleanup()
 atexit.register(cleanup)
 os.mkfifo("inpipe")
-proc = Popen(["./segclobber", "--persist"], stdin = PIPE, stdout = PIPE, stderr = PIPE, text = True, bufsize = 1)
+proc = Popen([SEGCLOBBER_PATH, "--persist"], stdin = PIPE, stdout = PIPE, stderr = PIPE, text = True, bufsize = 1)
 poll = select.poll()
 
 pipeReady = False

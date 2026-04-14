@@ -1,6 +1,6 @@
 #pragma once
 
-#define TTABLE_BITS 27
+#define TTABLE_BITS 26
 
 // Uncomment to print transposition table size and exit.
 //#define PRINT_TTABLE_SIZE

@@ -4,6 +4,9 @@ import random
 import select
 import sys
 from collections import Counter
+from segclobber_path import get_segclobber_path
+
+SEGCLOBBER_PATH = get_segclobber_path("build")
 
 proc = None
 args = sys.argv
@@ -149,7 +152,7 @@ def solve_board(board, player):
 
         flags = " ".join(flags)
 
-        command = f"./segclobber {flags}"
+        command = f"{SEGCLOBBER_PATH} {flags}"
         #print(command)
 
         proc = subprocess.Popen(command.split(),

@@ -13,7 +13,7 @@
 
 #include "options.h"
 #include "miscTypes.h"
-#include "database3.h"
+#include "database.h"
 
 typedef std::pair<int, bool> SolveResult;
 

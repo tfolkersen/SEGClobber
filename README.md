@@ -23,10 +23,17 @@ For more details about our algorithmic techniques, see our forthcoming paper,
 "SEGClobber - A Linear Clobber Solver" (TODO properly reference this)
 
 ## Basic Usage
-To build, go to the `src` directory and run `make`. This will produce a
-`segclobber` executable.
+1. Create a `build` directory, then build SEGClobber using CMake:
+```
+mkdir build && cd build
+```
+```
+cmake .. && cmake --build .
+```
+This will create a `segclobber` executable in the `build` directory.
 
-Usage format:
+
+2. Use SEGClobber from the build directory:
 ```
 ./segclobber [options] <board> <first player>
 ```
@@ -44,12 +51,17 @@ Example invocation to solve the board `BWBWBW.BBW` for black to play first:
 ```
 
 You can change the transposition table size by editing the `TTABLE_BITS` macro
-in `src/options.h`. If you uncomment the `PRINT_TTABLE_SIZE` macro, the program
-will print the size of the transposition table (in MB) and then quit, right
-before when it would normally use `calloc` to allocate memory for it. With the
-default 26 bits, the size should be around 5.6 GB.
+in `src_common/options.h`. If you uncomment the `PRINT_TTABLE_SIZE` macro, the
+program will print the size of the transposition table (in MB) and then quit,
+right before when it would normally use `calloc` to allocate memory for it.
+With the default 26 bits, the size should be around 5.6 GB.
 
-To test correctness, run `make test` (this will take a few minutes to complete). Also consider rebuilding the database first (`make db`).
+To test correctness, go to the `build` directory and run
+`cmake --build . --target test` (this will take a few minutes to complete).
+Also consider rebuilding the database first (`cmake --build . --target db`).
+
+NOTE: the absolute path of the `data` directory is baked into the `segclobber`
+executable. If you move the project's location, you will need to rebuild.
 
 ## SEGClobber CLI Options
 `[options]` is 0 or more of the following:
@@ -70,19 +82,17 @@ To test correctness, run `make test` (this will take a few minutes to complete).
 - `--altmove` Root node move ordering for (BW)^n and black first player. At the
   root node, plays 12-13 (on 0-indexed board) first if possible.
 
-## Other Makefile Targets
-- `db` Builds the `DBManage4` executable, then runs it to re-compute the
-  database files (`database3.bin` and `database3_alt.bin`). May take about
-  10-20 minutes.
-- `clean` Deletes all `.o` files, and the `segclobber` and `DBManage4`
-  executables.
-- `test` Uses `runtests.py` to run the game tests in the `src/tests` directory.
-  Restarts the `segclobber` executable between runs, so this may take a few minutes
-  to complete.
+## Other CMake Targets
+- `db` Builds the `dbmanage` executable, then runs it to re-compute the
+  database files (`data/database3.bin` and `data/database3_alt.bin`). May take
+  about 10-20 minutes.
+- `test` Uses `scripts/_runtests.py` to run the game tests in the `data/tests`
+  directory. Restarts the `segclobber` executable between runs, so this may
+  take a few minutes to complete.
 - `ftest` Like the `test` target, but uses `segclobber --persist` to greatly
   speed up run time.
 
-## Other Scripts
+## Other Scripts (in the `scripts` directory)
 - `pattern.py` (See output of `python3 -h pattern.py`) Used to run `segclobber`
   for various purposes:
     - `BW` and `BBW` conjectures
@@ -99,8 +109,7 @@ To test correctness, run `make test` (this will take a few minutes to complete).
   matplotlib) for our ACG 2025 paper.
 
 ## Known Bugs
-The makefile doesn't track dependencies, so sometimes you may need to `make
-clean` before rebuilding, if you edit the source code.
+None.
 
 ## Future Work
 Some potential future improvements:
