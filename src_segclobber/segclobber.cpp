@@ -11,6 +11,8 @@
 #include <chrono>
 #include <cassert>
 
+#include "cgt_test_lib.h"
+
 //#include "game.h"
 
 using namespace std;
@@ -71,6 +73,102 @@ void printUsage(const char *execName) {
     cout << endl;
     cout << "Legal board characters: 'B', 'W', '.'" << endl;
     cout << "Legal players: 'B', 'W'" << endl; 
+}
+
+inline uint8_t segclobber_color_from_ctl_color(ctl_color_t ctl_color) {
+    if (ctl_color == CTL_COLOR_BLACK)
+        return BLACK;
+    if (ctl_color == CTL_COLOR_WHITE)
+        return WHITE;
+    if (ctl_color == CTL_COLOR_EMPTY)
+        return EMPTY;
+    assert(false);
+}
+
+std::vector<uint8_t> getCTLBoard() {
+    std::vector<uint8_t> board;
+
+    auto push_tile = [&](uint8_t tile) -> void {
+        const bool back_is_empty = board.empty() || board.back() == EMPTY;
+
+        if (back_is_empty && tile == EMPTY)
+            return;
+
+        board.push_back(tile);
+    };
+
+    const ctl_size_t n_subgames = ctl_test_get_subgame_count();
+
+    for (ctl_size_t i = 0; i < n_subgames; i++) {
+        const ctl_size_t board_len = ctl_test_get_subgame_board_len(i);
+        const ctl_color_t* subgame_board = ctl_test_get_subgame_color_board(i);
+
+        if (i > 0)
+            push_tile(EMPTY);
+
+        for (ctl_size_t j = 0; j < board_len; j++)
+        {
+            const uint8_t tile = segclobber_color_from_ctl_color(subgame_board[j]);
+            push_tile(tile);
+        }
+    }
+
+    if (board.empty())
+        board.push_back(EMPTY);
+
+    return board;
+}
+
+void filesMain(const std::string& inputDir, const std::string& outputCSVPath) {
+    Database db;
+    db.loadFrom(solverDBName.c_str());
+
+    Solver solver(70, &db);
+
+    ctl_init(inputDir.c_str(), outputCSVPath.c_str());
+
+    uint64_t test_number = 0;
+    for (; ctl_has_test(); ctl_next_test()) {
+        cout << "Starting test " << test_number << endl;
+        test_number++;
+
+        const ctl_size_t nSubgames = ctl_test_get_subgame_count();
+
+        assert(ctl_test_get_kind() == CTL_TEST_KIND_BW_SOLVE);
+        for (ctl_size_t i = 0; i < nSubgames; i++) {
+            const char* subgameType = ctl_test_get_subgame_type(i);
+            assert(strcmp(subgameType, "clobber_1xn") == 0);
+        }
+
+        const int toPlay = 
+            segclobber_color_from_ctl_color(ctl_test_get_to_play());
+        assert(toPlay == BLACK || toPlay == WHITE);
+
+        const std::vector<uint8_t> boardConst = getCTLBoard();
+
+        const size_t boardLen = boardConst.size();
+        uint8_t board[boardLen];
+        memcpy(board, boardConst.data(), boardLen);
+
+        for (size_t i = 0; i < boardLen; i++)
+            assert(board[i] == boardConst[i]);
+
+        node_count = 0;
+        best_from = -1;
+        best_to = -1;
+
+        ctl_begin_test();
+        const int result = solver.solveID(board, boardLen, toPlay);
+        ctl_stop_test();
+
+        ctl_report_node_count(node_count);
+
+        const ctl_outcome_t ctl_outcome =
+            (result == toPlay) ? CTL_OUTCOME_WIN : CTL_OUTCOME_LOSS;
+        ctl_finalize_test(ctl_outcome);
+    }
+
+    ctl_finalize();
 }
 
 void persistMain() {
@@ -158,6 +256,12 @@ void persistMain() {
     }
 }
 
+enum main_mode_enum
+{
+    MAIN_MODE_CLI = 0,
+    MAIN_MODE_PERSIST,
+    MAIN_MODE_FROM_FILES,
+};
 
 int main(int argc, char **argv) {
     //if (test()) {
@@ -169,10 +273,13 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    bool persist = false;
+    main_mode_enum main_mode = MAIN_MODE_CLI;
     bool altDB = false;
 
     int additionalArgs = 0;
+
+    std::string testInputDir;
+    std::string outputCSVPath;
 
     // --persist, --altmove, --no-id, --altdb, --no-links
     int _argIdx;
@@ -181,7 +288,7 @@ int main(int argc, char **argv) {
         additionalArgs++;
 
         if (strcmp(arg, "--persist") == 0) {
-            persist = true;
+            main_mode = MAIN_MODE_PERSIST;
             continue;
         }
 
@@ -215,6 +322,24 @@ int main(int argc, char **argv) {
             continue;
         }
 
+        if (strcmp(arg, "--run-tests") == 0) {
+            main_mode = MAIN_MODE_FROM_FILES;
+
+            if (!(_argIdx + 2 < argc))
+            {
+                std::cerr << "Error: got --run-tests but invalid input/output "
+                    "paths. Usage: --run-tests <input dir> <output CSV path>"
+                    << std::endl;
+
+                return -1;
+            }
+
+            testInputDir = argv[_argIdx + 1];
+            outputCSVPath = argv[_argIdx + 2];
+            _argIdx += 2;
+
+            continue;
+        }
         
         additionalArgs--;
         break;
@@ -226,13 +351,24 @@ int main(int argc, char **argv) {
         solverDBName = "database3.bin";
 
 
-    if (persist) {
+    if (main_mode == MAIN_MODE_PERSIST) {
         if (_argIdx != argc) {
             printUsage(argv[0]);
             return -1;
         }
 
         persistMain();
+        return 0;
+    }
+
+    if (main_mode == MAIN_MODE_FROM_FILES)
+    {
+        if (_argIdx != argc) {
+            printUsage(argv[0]);
+            return -1;
+        }
+
+        filesMain(testInputDir, outputCSVPath);
         return 0;
     }
 

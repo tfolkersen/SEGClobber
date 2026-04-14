@@ -52,6 +52,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS "${SEGCLOBBER_CXX_FLAGS}")
 
 ################################################## Build executables
+add_subdirectory( cgt_testing_library )
 add_subdirectory( src_common )
 add_subdirectory( src_segclobber )
 add_subdirectory( src_dbmanage )
