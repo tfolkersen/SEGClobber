@@ -23,7 +23,7 @@ For more details about our algorithmic techniques, see our forthcoming paper,
 "SEGClobber - A Linear Clobber Solver" (TODO properly reference this)
 
 ## Basic Usage
-1. Create a `build` directory, then build SEGClobber using CMake:
+1. From the project's root directory, create a `build` directory, then build SEGClobber using CMake:
 ```
 mkdir build && cd build
 ```
