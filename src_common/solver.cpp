@@ -1,4 +1,5 @@
 #include "solver.h"
+#include "cgt_test_lib.h"
 #include "database.h"
 #include "options.h"
 #include "utils.h"
@@ -361,6 +362,10 @@ Solver::~Solver() {
     delete rng;
 }
 
+void Solver::clearTable() {
+    assert(table != nullptr);
+    memset(table, 0, tableSize);
+}
 
 int Solver::solveID(uint8_t *board, size_t len, int n) {
     int p = opponentNumber(n);
@@ -1206,6 +1211,8 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
     _validEntry = false;
     node_count += 1;
 
+    CTL_REPORT_NODE(depth);
+
     DBOUT(
         cout << endl;
         printBoard(board, boardLen, false);
@@ -1608,6 +1615,8 @@ inline optional<SolveResult> Solver::subgameStaticRules(
 pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, int depth) {
     _validEntry = false;
     node_count += 1;
+
+    CTL_REPORT_NODE(depth);
 
     // Get both simplified boards
     //unique_ptr<Subgame> boardSimple(getSimpleBoard(board, boardLen));

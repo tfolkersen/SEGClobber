@@ -136,6 +136,8 @@ class Solver {
     Solver(size_t boardLen, Database *db);
     ~Solver();
 
+    void clearTable();
+
     int solveID(uint8_t *board, size_t len, int n);
 
     std::pair<int, bool> searchID(uint8_t *board, size_t boardLen, 

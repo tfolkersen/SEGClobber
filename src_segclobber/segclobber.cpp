@@ -17,6 +17,8 @@
 
 using namespace std;
 
+bool clear_tt_between_tests = false;
+
 /*
 bool test() {
     return false;
@@ -157,11 +159,14 @@ void filesMain(const std::string& inputDir, const std::string& outputCSVPath) {
         best_from = -1;
         best_to = -1;
 
+        if (clear_tt_between_tests)
+            solver.clearTable();
+
         ctl_begin_test();
         const int result = solver.solveID(board, boardLen, toPlay);
         ctl_stop_test();
 
-        ctl_report_node_count(node_count);
+        //ctl_report_node_count(node_count);
 
         const ctl_outcome_t ctl_outcome =
             (result == toPlay) ? CTL_OUTCOME_WIN : CTL_OUTCOME_LOSS;
@@ -244,6 +249,8 @@ void persistMain() {
         best_from = -1;
         best_to = -1;
 
+        if (clear_tt_between_tests)
+            solver.clearTable();
         int result = solver.solveID(board, boardLen, rootPlayer);
 
         if (best_from == -1) {
@@ -338,6 +345,11 @@ int main(int argc, char **argv) {
             outputCSVPath = argv[_argIdx + 2];
             _argIdx += 2;
 
+            continue;
+        }
+
+        if (strcmp(arg, "--clear-tt") == 0) {
+            clear_tt_between_tests = true;
             continue;
         }
         
