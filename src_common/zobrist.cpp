@@ -1,4 +1,5 @@
 #include "zobrist.h"
+#include "options.h"
 #include <ctime>
 #include <vector>
 #include <cassert>
@@ -26,7 +27,7 @@ std::uniform_int_distribution<unsigned long long> RandomGenerator::_dist64(
 
 inline RandomGenerator::RandomGenerator()
 {
-    _rng.seed(std::time(0));
+    _rng.seed(ZOBRIST_TABLE_SEED);
 }
 
 inline uint64_t RandomGenerator::getRandomNumber()

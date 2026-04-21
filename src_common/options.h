@@ -5,6 +5,7 @@
 // Uncomment to print transposition table size and exit.
 //#define PRINT_TTABLE_SIZE
 
+#define ZOBRIST_TABLE_SEED 16979
 
 ////////////////////////////////////////////////////////////////////////////////
 // DON'T MODIFY THESE
