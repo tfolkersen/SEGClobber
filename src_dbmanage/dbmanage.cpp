@@ -471,7 +471,8 @@ uint64_t countMovesFor(const Subgame &sg, int player) {
     return moveCount;
 }
 
-uint64_t countMoves(const Subgame &sg) {
+// This is unused?
+[[maybe_unused]] uint64_t countMoves(const Subgame &sg) {
     const uint64_t bMoves = countMovesFor(sg, BLACK);
     const uint64_t wMoves = countMovesFor(sg, WHITE);
 

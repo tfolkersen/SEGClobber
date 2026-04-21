@@ -269,25 +269,24 @@ bool Subgame::isVisuallyInversePair(const Subgame *sg1, const Subgame *sg2) {
 vector<Subgame*> generateSubgamesNew(const uint8_t *board, size_t len) {
     vector<Subgame*> subgames;
 
-    int start = -1;
-    int end = -1;
+    // Start of currently tracked subgame
+    size_t start = SIZE_T_NPOS;
 
+    // Is 3 IFF tracked subgame has both BLACK and WHITE stones
     int foundMask = 0;
 
-    for (int i = 0; i < len; i++) {
-        if (start == -1 && board[i] != 0) {
+    for (size_t i = 0; i < len; i++) {
+        // Found start of new subgame
+        if (start == SIZE_T_NPOS && board[i] != 0) {
             start = i;
             foundMask = 0;
         }
 
-        if (board[i] != 0) {
-            foundMask |= board[i];
-        }
+        foundMask |= board[i];
 
-        if (start != -1 && board[i] == 0) {
+        // Found end of tracked subgame
+        if (start != SIZE_T_NPOS && board[i] == 0) {
             if (foundMask == 3) {
-                //subgames.push_back(pair<int, int>(start, i));
-
                 const size_t startIdx = start;
                 const size_t endIdx = i;
                 assert(endIdx >= startIdx);
@@ -295,13 +294,11 @@ vector<Subgame*> generateSubgamesNew(const uint8_t *board, size_t len) {
 
                 subgames.push_back(new Subgame(board + startIdx, subgameLen));
             }
-            start = -1;
+            start = SIZE_T_NPOS;
         }
     }
 
-    if (start != -1 && foundMask == 3) {
-        //subgames.push_back(pair<int, int>(start, len));
-
+    if (start != SIZE_T_NPOS && foundMask == 3) {
         const size_t startIdx = start;
         const size_t endIdx = len;
         assert(endIdx >= startIdx);

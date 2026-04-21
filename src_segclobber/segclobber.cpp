@@ -206,7 +206,7 @@ void persistMain() {
         }
 
         // Validate input
-        for (int i = 0; i < boardStr.size(); i++) {
+        for (size_t i = 0; i < boardStr.size(); i++) {
             const char &c = boardStr[i];
             if (c != '.' && c != 'B' && c != 'W') {
                 cerr << "Invalid board character. Use 'B', 'W', and '.'" << endl;

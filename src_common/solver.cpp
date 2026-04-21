@@ -237,19 +237,16 @@ vector<pair<int, int>> generateSubgames(uint8_t *board, size_t len) {
     vector<pair<int, int>> subgames;
 
     int start = -1;
-    int end = -1;
 
     int foundMask = 0;
 
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < static_cast<int>(len); i++) {
         if (start == -1 && board[i] != 0) {
             start = i;
             foundMask = 0;
         }
         
-        if (board[i] != 0) {
-            foundMask |= board[i];
-        }
+        foundMask |= board[i];
 
         if (start != -1 && board[i] == 0) {
             if (foundMask == 3) {
@@ -271,19 +268,16 @@ vector<SubgameRange> generateSubgameRanges(const uint8_t *board, size_t len) {
     vector<SubgameRange> subgames;
 
     int start = -1;
-    int end = -1;
 
     int foundMask = 0;
 
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < static_cast<int>(len); i++) {
         if (start == -1 && board[i] != 0) {
             start = i;
             foundMask = 0;
         }
         
-        if (board[i] != 0) {
-            foundMask |= board[i];
-        }
+        foundMask |= board[i];
 
         if (start != -1 && board[i] == 0) {
             if (foundMask == 3) {
@@ -1265,7 +1259,7 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
     vector<SubgameRange> ranges = generateSubgameRanges(sboard, sboardLen);
 
     if (Solver::deleteDominated) {
-        for (int i = 0; i < ranges.size(); i++) {
+        for (size_t i = 0; i < ranges.size(); i++) {
             const SubgameRange &range = ranges[i];
 
             uint8_t *dbEntry = db->get(&sboard[range.start], range.length);
@@ -1277,9 +1271,9 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
             }
 
             int moveIndex = 0;
-            for (int j = 0; j < moveCount; j++) {
+            for (size_t j = 0; j < moveCount; j++) {
                 int from = moves[2 * j];
-                int to = moves[2 * j + 1];
+                //int to = moves[2 * j + 1]; // `to` is unused
 
                 if (from >= range.start && from < range.end) { //found move
                     if ((dominated >> moveIndex) & ((uint64_t) 1)) {
@@ -1298,15 +1292,15 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
     vector<bool> prunedMoveGenerators = pruneMoveGenerators(sboard, sboardLen);
     assert(ranges.size() == prunedMoveGenerators.size());
 
-    for (int i = 0; i < moveCount; i++) {
+    for (size_t i = 0; i < moveCount; i++) {
         const int from = moves[2 * i];
         const int to = moves[2 * i + 1];
 
         if (from == -1)
             continue;
 
-        int subgameIdx = -1;
-        for (int j = 0; j < ranges.size(); j++) {
+        size_t subgameIdx = SIZE_T_NPOS;
+        for (size_t j = 0; j < ranges.size(); j++) {
             const SubgameRange &range = ranges[j];
             if (range.start <= from && from < range.end) {
                 assert(range.start <= to && to < range.end);
@@ -1315,7 +1309,7 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
                 break;
             }
         }
-        assert(subgameIdx != -1);
+        assert(subgameIdx != SIZE_T_NPOS);
 
         if (prunedMoveGenerators[subgameIdx]) {
             moves[2 * i] = -1;
@@ -1390,7 +1384,7 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
     if (bwMove != bestMove && bestMove != -1)
         moveOrder.push_back(bestMove);
 
-    for (int i = 0; i < moveCount; i++) {
+    for (int i = 0; i < static_cast<int>(moveCount); i++) {
         const int &from = moves[2 * i];
         const int &to = moves[2 * i + 1];
 
@@ -1691,7 +1685,7 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
 
     assert(rangesSimple.size() == outcomesSimple.size());
     if (Solver::deleteGames) {
-        for (int i = 0; i < rangesSimple.size(); i++) {
+        for (size_t i = 0; i < rangesSimple.size(); i++) {
             const int oc = outcomesSimple[i];
 
             if (oc != n && oc != OC_N)
@@ -1760,7 +1754,7 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
     //Delete dominated moves
     //#if defined(SOLVER_DELETE_DOMINATED_MOVES)
     if (Solver::deleteDominated) {
-        for (int i = 0; i < rangesSimple.size(); i++) {
+        for (size_t i = 0; i < rangesSimple.size(); i++) {
             const SubgameRange &range = rangesSimple[i];
 
             uint8_t *dbEntry = db->get(&sboard[range.start], range.length);
@@ -1771,9 +1765,9 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
                 continue;
 
             int moveIndex = 0;
-            for (int j = 0; j < moveCount; j++) {
+            for (size_t j = 0; j < moveCount; j++) {
                 int from = moves[2 * j];
-                int to = moves[2 * j + 1];
+                //int to = moves[2 * j + 1]; // `to` is unused
 
                 if (from >= range.start && from < range.end) { //found move
                     if ((dominated >> moveIndex) & ((uint64_t) 1)) {
@@ -1875,7 +1869,7 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
         size_t newMoveCount;
         uint8_t ub[UNDO_BUFFER_SIZE];
 
-        for (int i = 0; i < moveCount; i++) {
+        for (size_t i = 0; i < moveCount; i++) {
             const int from = moves[2 * i];
             const int to = moves[2 * i + 1];
 
@@ -1941,7 +1935,7 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
 
     vector<AnnotatedMove> annotatedMoves;
 
-    for (int i = 0; i < moveCount; i++) {
+    for (int i = 0; i < static_cast<int>(moveCount); i++) {
         const int from = moves[2 * i];
         const int to = moves[2 * i + 1];
 
@@ -1950,12 +1944,12 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
         bool pruned = prunedMoves[i];
 
         int subgameIdx = -1;
-        for (int i = 0; i < rangesSimple.size(); i++) {
-            const SubgameRange &range = rangesSimple[i];
+        for (int j = 0; j < static_cast<int>(rangesSimple.size()); j++) {
+            const SubgameRange &range = rangesSimple[j];
             if (range.start <= from && from < range.end) {
                 assert(range.start <= to && to < range.end);
 
-                subgameIdx = i;
+                subgameIdx = j;
                 break;
             }
         }

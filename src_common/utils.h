@@ -2,6 +2,7 @@
 
 #include "options.h"
 
+#include <limits>
 #include <ostream>
 #include <type_traits>
 #include <vector>
@@ -27,6 +28,7 @@
 #define DBOUT( x )
 #endif
 
+constexpr size_t SIZE_T_NPOS = std::numeric_limits<size_t>::max();
 
 //Return number of opposing player (1 --> 2), (2 --> 1)
 inline int opponentNumber(int n) { //Inline means this needs to be in the header
@@ -121,7 +123,7 @@ void negateBoard(uint8_t *board, size_t length);
 template <class T>
 std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
     os << "[";
-    for (int i = 0; i < vec.size(); i++) {
+    for (size_t i = 0; i < vec.size(); i++) {
         os << vec[i];
         if (i + 1 < vec.size()) {
             os << ", ";
@@ -136,7 +138,7 @@ template <>
 inline std::ostream &operator<<(std::ostream &os, const std::vector<uint8_t> &vec) {
     os << '[';
 
-    for (int i = 0; i < vec.size(); i++)
+    for (size_t i = 0; i < vec.size(); i++)
         os << playerNumberToChar(vec[i]);
 
     os << ']';

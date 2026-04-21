@@ -105,7 +105,7 @@ void makeGame(const vector<int> &shape, uint32_t gameNumber,
     int chunkOffset = 0;
 
 
-    for (int i = 0; i < *len; i++) {
+    for (size_t i = 0; i < *len; i++) {
         int chunk = shape[chunkIdx];
 
         if (chunkOffset < chunk) {
