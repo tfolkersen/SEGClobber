@@ -1227,9 +1227,15 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
 
     bool validEntry = entryPtr != 0;
 
-    if (validEntry && *tt_get_outcome(entryPtr) != 0) {
-        delete[] sboard;
-        return pair<int, bool>(*tt_get_outcome(entryPtr), true);
+    {
+        const bool tt_hit = validEntry && *tt_get_outcome(entryPtr) != 0;
+        CTL_REPORT_TT_ACCESS(tt_hit);
+
+        if (tt_hit) {
+            delete[] sboard;
+            return pair<int, bool>(*tt_get_outcome(entryPtr), true);
+        }
+
     }
 
     //generate moves
@@ -1359,6 +1365,7 @@ pair<int, bool> Solver::rootSearchID(uint8_t *board, size_t boardLen, int n, int
     validEntry = entryPtr != 0;
     if (validEntry)
         bestMove = tt_get_best_moves(entryPtr)[0];
+    CTL_REPORT_TT_ACCESS(bestMove != -1);
 
     int bestVal = -127;
     uint8_t undoBuffer[UNDO_BUFFER_SIZE];
@@ -1640,8 +1647,13 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
 
     bool validEntry = entryPtr != 0;
 
-    if (validEntry && *tt_get_outcome(entryPtr) != 0) {
-        return pair<int, bool>(*tt_get_outcome(entryPtr), true);
+    {
+        const bool tt_hit = validEntry && *tt_get_outcome(entryPtr) != 0;
+        CTL_REPORT_TT_ACCESS(tt_hit);
+
+        if (tt_hit) {
+            return pair<int, bool>(*tt_get_outcome(entryPtr), true);
+        }
     }
 
     // Get subgame ranges
@@ -1923,6 +1935,7 @@ pair<int, bool> Solver::searchID(uint8_t *board, size_t boardLen, int n, int p, 
     validEntry = entryPtr != 0;
     if (validEntry)
         bestMove = tt_get_best_moves(entryPtr)[0];
+    CTL_REPORT_TT_ACCESS(bestMove != -1);
 
     vector<int> moveOrder;
 

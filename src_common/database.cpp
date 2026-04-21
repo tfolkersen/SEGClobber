@@ -1,4 +1,5 @@
 #include "database.h"
+#include "cgt_test_lib.h"
 #include "miscTypes.h"
 #include "options.h"
 #include <iostream>
@@ -26,6 +27,7 @@ std::string resolve_path_relative_to_data_dir(const std::string& relative_path)
     p /= relative_path;
     return std::filesystem::absolute(p).string();
 }
+
 } // namespace
 
 uint8_t *db_get_outcome(const uint8_t *entry) {
@@ -423,7 +425,6 @@ uint64_t Database::getIdxDirect(const uint8_t *board, size_t len) {
     int high = indexEntryCount - 1;
     uint64_t sectionOffset = DB_NOT_FOUND;
 
-
     while (low <= high) {
         int i = (low + high) / 2;
 
@@ -478,6 +479,8 @@ uint64_t Database::getIdxDirect(const Subgame &sg) {
 uint8_t *Database::get(const uint8_t *board, size_t len) {
     uint64_t idx = getIdxDirect(board, len);
     //cout << "IDX " << idx << endl;
+
+    CTL_REPORT_DB_ACCESS(idx != DB_NOT_FOUND);
     if (idx == DB_NOT_FOUND) {
         return 0;
     }
@@ -490,6 +493,7 @@ uint8_t *Database::get(const Subgame &sg) {
 }
 
 uint8_t *Database::getFromIdx(uint64_t idx) {
+    CTL_REPORT_DB_ACCESS(idx != DB_NOT_FOUND);
     if (idx == DB_NOT_FOUND) {
         return 0;
     }
