@@ -23,7 +23,12 @@ For more details about our algorithmic techniques, see our forthcoming paper,
 "SEGClobber - A Linear Clobber Solver" (TODO properly reference this)
 
 ## Basic Usage
-1. From the project's root directory, create a `build` directory, then build SEGClobber using CMake:
+1. Clone the project and its submodules, i.e.:
+```
+git clone --recursive https://github.com/tfolkersen/SEGClobber.git
+```
+
+2. From the project's root directory, create a `build` directory, then build SEGClobber using CMake:
 ```
 mkdir build && cd build
 ```
@@ -33,7 +38,7 @@ cmake .. && cmake --build .
 This will create a `segclobber` executable in the `build` directory.
 
 
-2. Use SEGClobber from the build directory:
+3. Use SEGClobber from the build directory:
 ```
 ./segclobber [options] <board> <first player>
 ```
@@ -81,6 +86,14 @@ executable. If you move the project's location, you will need to rebuild.
 - `--no-id` Don't use iterative deepening.
 - `--altmove` Root node move ordering for (BW)^n and black first player. At the
   root node, plays 12-13 (on 0-indexed board) first if possible.
+- `--run-tests <input directory> <output .csv file>` uses the
+    `cgt_testing_library` to read input test cases from a given directory, and
+    generate performance/correctness data in an output CSV file. See the
+    `README.md` in the
+(library's repository)[https://github.com/ualberta-mueller-group/cgt_testing_library]
+    for more details.
+- `--clear-tt` Clear the transposition table after every game solved. Affects
+    `--persist` and `--run-tests`
 
 ## Other CMake Targets
 - `db` Builds the `dbmanage` executable, then runs it to re-compute the
